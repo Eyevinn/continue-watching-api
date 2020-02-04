@@ -1,3 +1,4 @@
+require("dotenv-vars");
 const server = require("./src/server");
 const logger = require("./src/helpers/logHelper");
 const port = process.env.PORT || 3000;
