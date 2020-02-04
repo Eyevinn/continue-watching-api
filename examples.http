@@ -1,0 +1,19 @@
+### insert data
+
+POST http://localhost:3000/position/user1/asset123/175
+###
+POST http://localhost:3000/position/user1/asset234/180
+###
+POST http://localhost:3000/position/user1/asset345/185
+
+### successfull fetch
+
+GET http://localhost:3000/position/user1/asset123
+
+### unsuccessfull fetch
+
+GET http://localhost:3000/position/user1/asset456
+
+###
+
+GET http://localhost:3000/position/user1
