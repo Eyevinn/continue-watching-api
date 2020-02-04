@@ -1,0 +1,28 @@
+version: "3.7"
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - app-tier
+    volumes:
+      - /tmp:/bitnami/redis/data
+  continue-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        buildno: local
+    environment:
+      - REDIS_URL=redis
+      - REDIS_PORT=6379
+    networks:
+      - app-tier
+    ports:
+      - 3000:3000
+

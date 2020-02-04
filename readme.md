@@ -26,3 +26,24 @@ Example of a simple implementation to build a continue watching api on top of Re
 - `REDIS_URL` if not local
 - `REDIS_PORT` if not default (6379)
 - `REDIS_AUTH`
+
+## Docker
+
+A `docker-compose` config file is provided that takes care of building the image and running this container together with a Redis db container.
+
+Start the service:
+
+- `docker-compose up`
+
+Stop the service:
+
+- `docker-compose down`
+
+The Redis container is using `/tmp` as persistant storage but this can be changed by modifying the `docker-compose.yml` file. Change:
+
+```
+    volumes:
+      - /tmp:/bitnami/redis/data
+```
+
+to where you want the persistant storage to be located.
