@@ -13,11 +13,8 @@ services:
     volumes:
       - /tmp:/bitnami/redis/data
   continue-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        buildno: local
+    build: .
+    image: continue-api:local
     environment:
       - REDIS_URL=redis
       - REDIS_PORT=6379
