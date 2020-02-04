@@ -18,6 +18,9 @@ module.exports = (fastify, opts, next) => {
     const assetId = req.params.assetId;
 
     const position = await positionRepository.get(userId, assetId);
+    if (!position) {
+      return res.code(404).send();
+    }
     res
       .header("Cache-Control", "public, no-cache")
       .code(200)
