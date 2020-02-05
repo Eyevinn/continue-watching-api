@@ -25,22 +25,22 @@ const list = async userId => {
   const keys = await redisClient.keysAsync(KEY_USER(userId));
   if (!keys) return [];
 
-  const expectedLength = keys.length;
-  let keepGoing = true;
-  const continueWatchingList = [];
+  const requestPromises = [];
+  keys.forEach(key => {
+    requestPromises.push(getInclExpiration(key));
+  });
+  const continueWatchingList = await Promise.all(requestPromises);
+  if (!continueWatchingList) return [];
 
-  while (keepGoing) {
-    const key = keys.shift();
-    const val = await redisClient.getAsync(key);
-    const expiration = await redisClient.ttlAsync(key);
-    const item = { assetId: key.split(":")[1], position: val, expiration };
-    continueWatchingList.push(item);
-    if (continueWatchingList.length >= expectedLength) {
-      keepGoing = false;
-      continueWatchingList.sort((a, b) => b.expiration - a.expiration);
-      return continueWatchingList;
-    }
-  }
+  continueWatchingList.sort((a, b) => b.expiration - a.expiration);
+  return continueWatchingList;
+};
+
+const getInclExpiration = async key => {
+  const val = await redisClient.getAsync(key);
+  const expiration = await redisClient.ttlAsync(key);
+  const item = { assetId: key.split(":")[1], position: val, expiration };
+  return item;
 };
 
 const del = (userId, assetId) => {
