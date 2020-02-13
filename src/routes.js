@@ -1,4 +1,4 @@
-const positionRepository = require("../repositories/positionRepository");
+const positionRepository = require("./positionRepository");
 
 module.exports = (fastify, opts, next) => {
   fastify.post("/:userId/:assetId/:position", async (req, res) => {

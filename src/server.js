@@ -10,7 +10,7 @@ fastify.register(fastifyRateLimit, {
   timeWindow: "1 minute"
 });
 
-fastify.register(require("./routes/position"), {
+fastify.register(require("./routes"), {
   prefix: "/position"
 });
 

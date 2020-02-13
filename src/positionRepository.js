@@ -1,4 +1,4 @@
-const redisClient = require("../helpers/redisClient");
+const redisClient = require("./helpers/redisClient");
 
 const KEY_ASSET = (userId, assetId) => `${userId}:${assetId}`;
 const KEY_USER = userId => `*${userId}*`;
@@ -6,23 +6,23 @@ const ONE_YEAR = 1 * 60 * 60 * 24 * 365;
 
 const store = async (userId, assetId, position) => {
   if (!userId || !assetId || !position) return false;
-  let success = await redisClient.setAsync(
+  const success = await redisClient.setex(
     KEY_ASSET(userId, assetId),
+    ONE_YEAR,
     position
   );
-  success = await redisClient.expireAsync(KEY_ASSET(userId, assetId), ONE_YEAR);
   return success;
 };
 
 const get = async (userId, assetId) => {
   if (!userId || !assetId) return false;
-  const position = await redisClient.getAsync(KEY_ASSET(userId, assetId));
+  const position = await redisClient.get(KEY_ASSET(userId, assetId));
   return position;
 };
 
 const list = async userId => {
   if (!userId) return false;
-  const keys = await redisClient.keysAsync(KEY_USER(userId));
+  const keys = await redisClient.keys(KEY_USER(userId));
   if (!keys) return [];
 
   const requestPromises = [];
@@ -37,19 +37,16 @@ const list = async userId => {
 };
 
 const getInclExpiration = async key => {
-  const val = await redisClient.getAsync(key);
-  const expiration = await redisClient.ttlAsync(key);
+  const val = await redisClient.get(key);
+  const expiration = await redisClient.ttl(key);
   const item = { assetId: key.split(":")[1], position: val, expiration };
   return item;
 };
 
-const del = (userId, assetId) => {
-  return new Promise((resolve, reject) => {
-    if (!userId || !assetId) return reject();
-    redisClient.del(KEY_ASSET(userId, assetId), success => {
-      return resolve(success);
-    });
-  });
+const del = async (userId, assetId) => {
+  if (!userId || !assetId) return false;
+  const success = await redisClient.del(KEY_ASSET(userId, assetId));
+  return success;
 };
 
 module.exports = {
