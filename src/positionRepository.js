@@ -1,13 +1,15 @@
 const redisClient = require("./helpers/redisClient");
 
-const KEY_ASSET = (userId, assetId) => `${userId}:${assetId}`;
-const KEY_USER = userId => `*${userId}*`;
+const KEY_PREFIX = "resume";
+const KEY_USER = userId => `*${KEY_PREFIX}:${userId}*`;
+const generateKey = (...args) => args.join(":");
 const ONE_YEAR = 1 * 60 * 60 * 24 * 365;
 
 const store = async (userId, assetId, position) => {
   if (!userId || !assetId || !position) return false;
+  const key = generateKey(KEY_PREFIX, userId, assetId);
   const success = await redisClient.setex(
-    KEY_ASSET(userId, assetId),
+    key,
     ONE_YEAR,
     position
   );
@@ -16,7 +18,8 @@ const store = async (userId, assetId, position) => {
 
 const get = async (userId, assetId) => {
   if (!userId || !assetId) return false;
-  const position = await redisClient.get(KEY_ASSET(userId, assetId));
+  const key = generateKey(KEY_PREFIX, userId, assetId);
+  const position = await redisClient.get(key);
   return position;
 };
 
@@ -39,13 +42,15 @@ const list = async userId => {
 const getInclExpiration = async key => {
   const val = await redisClient.get(key);
   const expiration = await redisClient.ttl(key);
-  const item = { assetId: key.split(":")[1], position: val, expiration };
+  const assetId = key.split(":").pop();
+  const item = { assetId, position: val, expiration };
   return item;
 };
 
 const del = async (userId, assetId) => {
   if (!userId || !assetId) return false;
-  const success = await redisClient.del(KEY_ASSET(userId, assetId));
+  const key = generateKey(KEY_PREFIX, userId, assetId);
+  const success = await redisClient.del(key);
   return success;
 };
 
