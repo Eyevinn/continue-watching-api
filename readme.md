@@ -2,6 +2,11 @@
 
 Example of a simple implementation to build a continue watching api on top of Redis
 
+#### Related repositories
+
+- [Favorites API](https://github.com/Eyevinn/favorites-api)
+- [Ratings API](https://github.com/Eyevinn/ratings-api)
+
 ## Requirements
 
 - nodejs v10+
