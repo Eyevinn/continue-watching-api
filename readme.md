@@ -7,6 +7,8 @@ Example of a simple implementation to build a continue watching api on top of Re
 - [Favorites API](https://github.com/Eyevinn/favorites-api)
 - [Ratings API](https://github.com/Eyevinn/ratings-api)
 - [Stream Limit API](https://github.com/Eyevinn/stream-limit-api)
+- [User Segmentation API](https://github.com/Eyevinn/user-segmentation-api)
+- [Recommendation Engine](https://github.com/Eyevinn/eye-recommender)
 
 ## Requirements
 
