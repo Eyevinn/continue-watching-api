@@ -19,7 +19,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv-vars": "^2.1.0",
-    "fastify": "^3.13.0",
+    "fastify": "^3.29.4",
     "fastify-express": "^0.3.2",
     "fastify-rate-limit": "^5.4.1",
     "ioredis": "^4.23.0"
