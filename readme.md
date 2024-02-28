@@ -33,7 +33,8 @@ Example of a simple implementation to build a continue watching api on top of Re
 - `NODE_ENV` if set to `development` there will be some logging made into the console
 - `REDIS_URL` if not local
 - `REDIS_PORT` if not default (6379)
-- `REDIS_AUTH`
+- `REDIS_USERNAME`
+- `REDIS_PASSWORD`
 
 ## Docker
 
