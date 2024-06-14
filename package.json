@@ -17,6 +17,8 @@
     "prettier": "^2.2.1"
   },
   "dependencies": {
+    "@osaas/client-core": "^0.8.0",
+    "@osaas/client-db": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv-vars": "^2.1.0",
     "fastify": "^3.29.4",

@@ -1,8 +1,19 @@
 require("dotenv-vars");
+const { Context } = require('@osaas/client-core');
+const { ValkeyDb } = require('@osaas/client-db');
+
 const logger = require("./src/helpers/logHelper");
 const port = process.env.PORT || 3000;
 
 async function server() {
+  const context = new Context();
+  const db = new ValkeyDb({ context, name: 'mydb' });
+  await db.init();
+
+  const redisUrl = await db.getRedisUrl();
+  process.env.REDIS_URL = redisUrl.hostname;
+  process.env.REDIS_PORT = redisUrl.port;
+
   const fastify = require("fastify")({
     ignoreTrailingSlash: true
   });
